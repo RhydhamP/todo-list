@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>TO DO List</title>
+</head>
+
+<body>
+  <form action="createNewTask" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Title</label>
+      <input type="text" name="title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Description</label>
+      <input type="textarea" name="description" class="form-control" id="exampleInputPassword1">
+    </div>
+    <button type="submit" class="btn btn-primary">Add Task</button>
+  </form>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Start</th>
+        <th scope="col">Complete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in task_list %}
+      <tr>
+        <th scope="row">{{i}}</th>
+        <td>{{task.title}}</td>
+        <td>{{task.description}}</td>
+        <td><a href="{% url 'edit' task.id %}" class="btn btn-primary">Edit</a></td>
+        <td><a href="{% url 'delete' task.id %}" class="btn btn-danger">Delete</a></td>
+        <td><a href="{% url 'start' task.id %}" class="btn btn-success">
+            {% if not task.start%}
+            Start{% endif %}
+            {% if task.start %}
+            {% if not task.complete %}Task Started{% endif %}{% endif %}
+            {% if task.start and task.complete %}Task Completed{% endif %}
+          </a></td>
+        <td><a href="{% url 'complete' task.id %}" class="btn btn-info">
+            {% if not task.complete %}
+            {% if task.start %}Complete Task{% endif %} {% if not task.start %}Complete{% endif %}{% endif %}
+            {% if task.complete and task.start%}Task Completed{% endif %}
+          </a></td>
+      </tr>
+      {% endfor %}
+      {% comment %} <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr> {% endcomment %}
+    </tbody>
+  </table>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
